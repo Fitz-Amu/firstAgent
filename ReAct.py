@@ -34,10 +34,35 @@ class HelloAgentsLOM:
 
             print("llm 响应成功")
             collected_content = []
+            for chunk in response:
+                content = chunk.choices[0].delta.content or ""
+                print(content, end="", flush=True)
+                collected_content.append(content)
+            print()
+            return "".join(collected_content)
+
 
         except Exception as e:
             print(f"调用 {self.model} 接口失败: {e}")
             return None
+
+
+
+if __name__ == "__main__":
+    try:
+        llmClient = HelloAgentsLOM()
+        exampleMessages = [
+            {"role": "system", "content": "You are a helpful assistant that writes python code."},
+            {"role": "user", "content": "写一个Python代码，实现一个简单的Hello World程序。"}
+        ]
+        print("calling llm...")
+        response = llmClient.thinking(exampleMessages)
+        if response:
+            print("\n\n完整模型输出")
+            print(response)
+    except Exception as e:
+
+        print(f"程序运行失败: {e}")
 
 
 
