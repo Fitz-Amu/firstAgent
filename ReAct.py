@@ -32,13 +32,13 @@ class HelloAgentsLOM:
                 stream=True
             )
 
-            print("llm 响应成功")
+            # print("llm 响应成功")
             collected_content = []
             for chunk in response:
                 content = chunk.choices[0].delta.content or ""
-                print(content, end="", flush=True)
+                # print(content, end="", flush=True)
                 collected_content.append(content)
-            print()
+            # print()
             return "".join(collected_content)
 
 
