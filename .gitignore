@@ -1,3 +1,5 @@
 .env
+*.env
+Neo4j*
 __pycache__/
 memory_data/

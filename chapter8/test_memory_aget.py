@@ -1,8 +1,11 @@
-from hello_agents import SimpleAgent, HelloAgentsLLM, ToolRegistry
-from hello_agents.tools import MemoryTool, RAGTool
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# 必须在 import hello_agents 之前加载项目根目录的 .env，否则记忆会连到本地 Qdrant
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
+from hello_agents import SimpleAgent, HelloAgentsLLM, ToolRegistry
+from hello_agents.tools import MemoryTool, RAGTool
 
 llm = HelloAgentsLLM()
 
@@ -14,10 +17,12 @@ agent = SimpleAgent(
 
 tool_registry = ToolRegistry()
 
-memory_tool = MemoryTool(user_id="123")
+print("注册记忆工具")
+memory_tool = MemoryTool(user_id="user123")
 tool_registry.register_tool(memory_tool)
 
-rag_tool = RAGTool(knowledge_base_name="./knowledge_base")
+print("注册 RAG 工具")
+rag_tool = RAGTool(knowledge_base_path="./knowledge_base")
 tool_registry.register_tool(rag_tool)
 
 agent.tool_registry = tool_registry
