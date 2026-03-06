@@ -1,2 +1,4 @@
 openai>=2.20.0
 python-dotenv>=1.2.1
+# hello-agents 记忆模块使用 client.search()，需 qdrant-client <1.16（1.16 起已移除 search）
+qdrant-client>=1.6.0,<1.16
