@@ -1,4 +1,7 @@
-from multiprocessing import context
+import warnings
+# 客户端 1.15 与 Qdrant 云服务器 1.17 次版本差导致警告，功能正常，忽略即可
+warnings.filterwarnings("ignore", message=".*Qdrant client version.*incompatible with server version.*")
+
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")

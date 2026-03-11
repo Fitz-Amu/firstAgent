@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore", message=".*Qdrant client version.*incompatible with server version.*")
+
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
@@ -13,17 +16,19 @@ memory_tool = MemoryTool(user_id="user123")
 rag_tool = RAGTool(knowledge_base_path="./knowledge_base")
 
 #2. 创建 context builder
+# 说明：min_relevance 用“按空格分词+词重叠”算相关性，中文常无空格导致为 0，记忆/历史会被过滤；
+# 设为 0 可让 Evidence（记忆+RAG）和 Context（对话历史）正常进入上下文
 config = ContextConfig(
-    max_tokens= 3000,
+    max_tokens=3000,
     reserve_ratio=0.2,
-    min_relevance=0.2,
+    min_relevance=0.0,
     enable_compression=True,
 )
 
 builder = ContextBuilder(
-    memory_tool,
-    rag_tool,
-    config
+    memory_tool = memory_tool,
+    rag_tool = rag_tool,
+    config = config,
 )
 
 # 3.准备对话历史
@@ -57,7 +62,7 @@ context = builder.build(
 )
 
 print ("=" * 80)
-print ("构建上下文: ")
+print ("构建的上下文: ")
 print ("=" * 80)
 print (context)
 print ("=" * 80)
